@@ -14,7 +14,7 @@ private:
 
   QString getFlagIcon(ModInfo::EFlag flag) const;
 private:
-  static ModInfo::EFlag m_ConflictFlags[4];
+  static ModInfo::EFlag m_ConflictFlags[5];
 };
 
 #endif // MODFLAGICONDELEGATE_H

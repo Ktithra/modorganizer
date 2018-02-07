@@ -2,10 +2,11 @@
 #include <QList>
 
 
-ModInfo::EFlag ModFlagIconDelegate::m_ConflictFlags[4] = { ModInfo::FLAG_CONFLICT_MIXED
+ModInfo::EFlag ModFlagIconDelegate::m_ConflictFlags[5] = { ModInfo::FLAG_CONFLICT_MIXED
                                                          , ModInfo::FLAG_CONFLICT_OVERWRITE
                                                          , ModInfo::FLAG_CONFLICT_OVERWRITTEN
-                                                         , ModInfo::FLAG_CONFLICT_REDUNDANT };
+                                                         , ModInfo::FLAG_CONFLICT_REDUNDANT
+                                                         , ModInfo::FLAG_CONFLICT_HIDDEN };
 
 ModFlagIconDelegate::ModFlagIconDelegate(QObject *parent)
   : IconDelegate(parent)
@@ -48,6 +49,7 @@ QString ModFlagIconDelegate::getFlagIcon(ModInfo::EFlag flag) const
     case ModInfo::FLAG_CONFLICT_OVERWRITTEN: return ":/MO/gui/emblem_conflict_overwritten";
     case ModInfo::FLAG_CONFLICT_MIXED: return ":/MO/gui/emblem_conflict_mixed";
     case ModInfo::FLAG_CONFLICT_REDUNDANT: return ":MO/gui/emblem_conflict_redundant";
+    case ModInfo::FLAG_CONFLICT_HIDDEN: return ":MO/gui/emblem_conflict_hidden";
     default: return QString();
   }
 }
@@ -59,7 +61,7 @@ size_t ModFlagIconDelegate::getNumIcons(const QModelIndex &index) const
     ModInfo::Ptr info = ModInfo::getByIndex(modIdx);
     std::vector<ModInfo::EFlag> flags = info->getFlags();
     size_t count = flags.size();
-    if (std::find_first_of(flags.begin(), flags.end(), m_ConflictFlags, m_ConflictFlags + 4) == flags.end()) {
+    if (std::find_first_of(flags.begin(), flags.end(), m_ConflictFlags, m_ConflictFlags + 5) == flags.end()) {
       ++count;
     }
     return count;

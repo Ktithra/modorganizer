@@ -411,6 +411,7 @@ void ModInfoRegular::ignoreUpdate(bool ignore)
 std::vector<ModInfo::EFlag> ModInfoRegular::getFlags() const
 {
   std::vector<ModInfo::EFlag> result = ModInfoWithConflictInfo::getFlags();
+//  QDir dir(absolutePath());
   if ((m_NexusID > 0) && (endorsedState() == ENDORSED_FALSE)) {
     result.push_back(ModInfo::FLAG_NOTENDORSED);
   }
@@ -423,6 +424,9 @@ std::vector<ModInfo::EFlag> ModInfoRegular::getFlags() const
   if (m_PluginSelected) {
     result.push_back(ModInfo::FLAG_PLUGIN_SELECTED);
   }
+//  if (dir.entryList(QStringList() << "*.mohidden").size() > 0); {
+//    result.push_back(ModInfo::FLAG_CONFLICT_HIDDEN);
+//  }
   return result;
 }
 

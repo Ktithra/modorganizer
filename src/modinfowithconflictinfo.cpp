@@ -30,6 +30,9 @@ std::vector<ModInfo::EFlag> ModInfoWithConflictInfo::getFlags() const
     case CONFLICT_REDUNDANT: {
       result.push_back(ModInfo::FLAG_CONFLICT_REDUNDANT);
     } break;
+    case CONFLICT_HIDDEN: {
+      result.push_back(ModInfo::FLAG_CONFLICT_HIDDEN);
+    } break;
     default: { /* NOP */ }
   }
   return result;
@@ -87,6 +90,7 @@ void ModInfoWithConflictInfo::doConflictCheck() const
     m_LastConflictCheck = QTime::currentTime();
 
     if (files.size() != 0) {
+      QDir dir(absolutePath());
       if (!providesAnything)
         m_CurrentConflictState = CONFLICT_REDUNDANT;
       else if (!m_OverwriteList.empty() && !m_OverwrittenList.empty())
@@ -95,6 +99,8 @@ void ModInfoWithConflictInfo::doConflictCheck() const
         m_CurrentConflictState = CONFLICT_OVERWRITE;
       else if (!m_OverwrittenList.empty())
         m_CurrentConflictState = CONFLICT_OVERWRITTEN;
+      else if (dir.entryList(QStringList() << "*.mohidden").size() > 0)
+        m_CurrentConflictState = CONFLICT_HIDDEN;
     }
   }
 }
